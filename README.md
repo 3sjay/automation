@@ -1,8 +1,13 @@
 # automation
-terraform and other automation scripts
+packer/terraform and other automation scripts
+
+## aws\_wireguard
+
+Create an AMI with packer and run then you can setup as many servers as you want with terraform. 
+More info the the README.md
 
 
-## setup\_wireguard
+## setup\_wireguard.sh
 
 Setup wireguard server on a VPS, creates and prints the config for the client too.
 
@@ -18,21 +23,7 @@ bash setup_wireguard.sh <ip/hostname of VPS>
 
 Automate the setup of a VPS on AWS. Another user 'user' is also created which is just to setup ssh tunnels. On each server a new keypair is created for this user, located in the respective users' home folder.
 
-The `setup.sh` script is executed after the server is created.
-
-
-```
-# set the AWS API ENV variables
-export AWS_ACCESS_KEY_ID=<snip>
-export AWS_SECRET_ACCESS_KEY=<snip>
-
-# initialize
-terraform init
-# setup the server 
-terraform apply
-# if not needed anymore
-terraform destroy
-```
+More info in the README.md
 
 Change the following in main.tf if another public/private key pair should be used to access the VPS.
 
