@@ -31,7 +31,7 @@ build {
       "sudo apt-get update",
       "DEBIAN_FRONTEND=noninteractive sudo apt dist-upgrade -y",
       "sudo apt install -y wireguard netfilter-persistent",
-      "sudo iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT ; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE ; systemctl enable netfilter-persistent ; netfilter-persistent save"
+      "sudo iptables -A FORWARD -i wg0 -o wg0 -m conntrack --ctstate NEW -j ACCEPT ; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE ; systemctl enable netfilter-persistent ; netfilter-persistent save",
       "echo net.ipv4.ip_forward=1 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p"
     ]  
   }
