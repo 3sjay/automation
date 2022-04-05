@@ -4,7 +4,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "instance" {
-  name = "allow ingress TCP 22,80,443,8000. UDP 51829"
+  name = "wireguard-secgroup"
 
   ingress {
     from_port = var.server_port
@@ -53,8 +53,7 @@ resource "aws_instance" "vpnInstance" {
   ami           = var.instance_ami
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.instance.id]
-  key_name      = "aws_key"
-
+  key_name      = "aws_key2"
 
   provisioner "local-exec" {
     command = "bash setup-local.sh ${self.public_ip}"
@@ -69,6 +68,6 @@ output "public_ip" {
 
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "aws_key"
+  key_name   = "aws_key2"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
