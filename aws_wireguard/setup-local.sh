@@ -65,7 +65,7 @@ sed -i -e "s|__PUBLIC_KEY__|${PUBKEY_SERVER}|g" wgclient.conf
 sed -i -e "s|__IP__|${IP}|g" wgclient.conf
 
 ## remove the {wgclient,wgserver}.conf-e files created by sed -i -e on OSX
-rm wg*-h
+rm wg*-e
 
 
 scp wgserver.conf ubuntu@${IP}:/home/ubuntu/wgserver.conf
