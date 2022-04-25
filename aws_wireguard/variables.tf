@@ -3,7 +3,7 @@ variable "region" {
 }
 
 variable "instance_ami" {
-  default = "ami-0f115bc91a825597e"  # use value provided by the packer script
+  default = "ami-06f1f08254df2f400"
 }
 
 variable "instance_type" {
@@ -14,5 +14,11 @@ variable "instance_type" {
 variable "server_port" {
   description = "variable port to be allowed through the firewall"
   default     = 8000
+  type        = number
+}
+
+variable "num_servers" {
+  description = "Number of servers we want"
+  default     = 1
   type        = number
 }
