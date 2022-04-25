@@ -54,6 +54,11 @@ resource "aws_instance" "vpnInstance" {
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.instance.id]
   key_name      = "aws_key2"
+  count         = var.num_servers
+
+  tags =  {
+    Name = "Wireguard VPN - ${count.index}"
+  }
 
   provisioner "local-exec" {
     command = "bash setup-local.sh ${self.public_ip}"
@@ -62,7 +67,8 @@ resource "aws_instance" "vpnInstance" {
 }
 
 output "public_ip" {
-  value       = aws_instance.vpnInstance.public_ip
+  #value       = aws_instance.vpnInstance.public_ip
+  value       = ["${aws_instance.vpnInstance[*].public_ip}"]
   description = "The public IP of the AWS instance"
 }
 
