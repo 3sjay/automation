@@ -30,7 +30,7 @@ PUBKEY_CLIENT=$(echo ${PRIVKEY_CLIENT}|wg pubkey)
 echo "[*] Client pubkey: " ${PUBKEY_CLIENT}
 
 
-cat <<EOF > wgserver.conf
+cat <<EOF > wgserver-${IP}.conf
 [Interface]
 Address = 192.160.2.1/32
 ListenPort = 51829
@@ -41,7 +41,7 @@ PublicKey = __PUBLIC_KEY__
 AllowedIPs = 192.160.2.0/24
 EOF
 
-cat <<EOF >wgclient.conf
+cat <<EOF >wgclient-${IP}.conf
 [Interface]
 Address = 192.160.2.2
 PrivateKey = __PRIVATE_KEY__
@@ -57,22 +57,21 @@ EOF
 
 # Replace the public and private keys for client and server
 # '-i' and '-e' used as this works for Unix and Linux sed's
-sed -i -e "s|__PRIVATE_KEY__|${PRIVKEY_SERVER}|g"  wgserver.conf
-sed -i -e "s|__PUBLIC_KEY__|${PUBKEY_CLIENT}|g" wgserver.conf
+sed -i -e "s|__PRIVATE_KEY__|${PRIVKEY_SERVER}|g"  wgserver-${IP}.conf
+sed -i -e "s|__PUBLIC_KEY__|${PUBKEY_CLIENT}|g" wgserver-${IP}.conf
 
-sed -i -e "s|__PRIVATE_KEY__|${PRIVKEY_CLIENT}|g" wgclient.conf
-sed -i -e "s|__PUBLIC_KEY__|${PUBKEY_SERVER}|g" wgclient.conf
-sed -i -e "s|__IP__|${IP}|g" wgclient.conf
+sed -i -e "s|__PRIVATE_KEY__|${PRIVKEY_CLIENT}|g" wgclient-${IP}.conf
+sed -i -e "s|__PUBLIC_KEY__|${PUBKEY_SERVER}|g" wgclient-${IP}.conf
+sed -i -e "s|__IP__|${IP}|g" wgclient-${IP}.conf
 
 ## remove the {wgclient,wgserver}.conf-e files created by sed -i -e on OSX
 rm wg*-e
 
-
-scp wgserver.conf ubuntu@${IP}:/home/ubuntu/wgserver.conf
+scp wgserver-${IP}.conf ubuntu@${IP}:/home/ubuntu/wgserver-${IP}.conf
 
 # Further setup, these cmds could be written to a .sh file, uploaded to the server
 # and executed there.
-ssh ubuntu@${IP} "sudo mv /home/ubuntu/wgserver.conf /etc/wireguard/wg0.conf"
+ssh ubuntu@${IP} "sudo mv /home/ubuntu/wgserver-${IP}.conf /etc/wireguard/wg0.conf"
 ssh ubuntu@${IP} "sudo chown root:root /etc/wireguard/wg0.conf"
 ssh ubuntu@${IP} "sudo chmod 600 /etc/wireguard/wg0.conf"
 ssh ubuntu@${IP} "sudo systemctl enable wg-quick@wg0 ; wg-quick up wg0"
@@ -84,5 +83,5 @@ ssh ubuntu@${IP} "sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE"
 ssh ubuntu@${IP} "sudo systemctl enable netfilter-persistent"
 ssh ubuntu@${IP} "sudo netfilter-persistent save"
 
-echo "[*] wg{server,client}.conf written to current working directory."
+echo "[*] wg{server,client}-${IP}.conf written to current working directory."
 
