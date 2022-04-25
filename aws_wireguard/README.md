@@ -21,3 +21,9 @@ Make sure that you have the AWS API secrets set as environment variables
 
 ### Finally
 Copy the created wgclient.conf into your Wireguard config file/GUI
+
+
+
+### I Want More/Less
+If you want more or less instances you can just modify the `num_servers` variable in `variables.tf` to match. Then execute:
+`terraform apply`.
